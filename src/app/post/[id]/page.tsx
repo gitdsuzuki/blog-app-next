@@ -27,7 +27,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ params }) => {
       
     }
     fetcher()
-  },[id])
+  },[])
 
 
   if (loading) return <p>読み込み中です...</p>
