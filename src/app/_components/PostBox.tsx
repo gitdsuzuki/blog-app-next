@@ -2,9 +2,9 @@
 
 import Dayjs from 'dayjs'
 import Link from 'next/link'
-import type { Post } from '@/app/_types'
+import type { MicroCmsPost } from '@/app/_types'
 
-const PostBox: React.FC<{ post: Post }> = ({post}) => {
+const PostBox: React.FC<{ post: MicroCmsPost }> = ({post}) => {
   const { id, title, createdAt, categories, content } = post
 
   return (
@@ -17,8 +17,8 @@ const PostBox: React.FC<{ post: Post }> = ({post}) => {
             </div>
             <div className="flex flex-auto justify-end">
               <ul className="flex text-xs">
-                {categories.map((elem: string) =>
-                <li key={elem} className="text-sky-700 border border-sky-700 p-1.5 ml-2 rounded-md">{elem}</li>
+                {categories.map((elem: {id: string, name: string}) =>
+                <li key={elem.id} className="text-sky-700 border border-sky-700 p-1.5 ml-2 rounded-md">{elem.name}</li>
                 )}
               </ul>
             </div>
