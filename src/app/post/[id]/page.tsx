@@ -2,7 +2,7 @@
 
 import Dayjs from 'dayjs'
 import { useState, useEffect } from 'react'
-import type { Post, PostResponse, PostDetailsProps } from '@/types/index'
+import type { Post, PostResponse, PostDetailsProps } from '@/app/_types/index'
 
 const PostDetails: React.FC<PostDetailsProps> = ({ params }) => {
   const [post, setPost] = useState<Post | null>(null)

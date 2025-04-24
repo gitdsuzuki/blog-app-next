@@ -2,7 +2,7 @@
 
 import Dayjs from 'dayjs'
 import Link from 'next/link'
-import type { Post } from '@/types/index.ts'
+import type { Post } from '@/app/_types'
 
 const PostBox: React.FC<{ post: Post }> = ({post}) => {
   const { id, title, createdAt, categories, content } = post

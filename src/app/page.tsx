@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import PostBox from '@/components/PostBox'
-import type { Post, PostsResponse } from '@/types/index.ts'
+import PostBox from '@/app/_components/PostBox'
+import type { Post, PostsResponse } from '@/app/_types'
 
 const PostList: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([])
