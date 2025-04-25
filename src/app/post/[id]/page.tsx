@@ -3,7 +3,7 @@
 import Dayjs from 'dayjs'
 import { useState, useEffect } from 'react'
 import type { MicroCmsPost, PostDetailsProps } from '@/app/_types/index'
-import Image from 'next/Image'
+import Image from 'next/image'
 
 const PostDetails: React.FC<PostDetailsProps> = ({ params }) => {
   const { id } = params
