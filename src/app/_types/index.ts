@@ -1,10 +1,10 @@
 export type Post = {
-  id: string
-  title: string
-  content: string
-  thumbnailUrl: string
-  createdAt: string
-  postCategories: { category: { id: string, name: string}}[]
+  id?: string
+  title?: string
+  content?: string
+  thumbnailUrl?: string
+  createdAt?: string
+  postCategories?: { category: { id: string, name: string}}[]
 }
 
 export type Category = {

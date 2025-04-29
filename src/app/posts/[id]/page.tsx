@@ -15,10 +15,8 @@ const PostDetails: React.FC<PostDetailsProps> = ({ params }) => {
       setLoading(true)
       const res: Response = await fetch(`${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/posts/${id}`)
       const data = await res.json() as PostResponse
-      console.log(data.post)
       setPost(data.post)
       setLoading(false)
-      
     }
     fetcher()
   },[id])
@@ -34,7 +32,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ params }) => {
       <div className="mx-auto max-w-3xl">
         <div className="pb-4">
           <Image
-            src={thumbnailUrl}
+            src={thumbnailUrl || "https://placehold.jp/800x400.png"}
             width={800}
             height={400}
             alt="thumbnail"
@@ -47,7 +45,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ params }) => {
           <div className="flex flex-auto justify-end">
             <ul className="flex text-sm">
               {
-                postCategories.map((elem: { category: {id: string, name: string}}) => 
+                postCategories?.map((elem: { category: {id: string, name: string}}) => 
                 <li key={elem.category.id} className="text-sky-700 border border-sky-700 p-1.5 ml-2 rounded-md">
                   {elem.category.name}
                 </li>
@@ -59,7 +57,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ params }) => {
         <div className="text-2xl pl-3 py-2 mb-2">
           {title}
         </div>
-        <div dangerouslySetInnerHTML={{ __html: content }} className="pl-3 opacity-80" />
+        <div dangerouslySetInnerHTML={{ __html: content || "" }} className="pl-3 opacity-80" />
       </div>
     </div>
   )

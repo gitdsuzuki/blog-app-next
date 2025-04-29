@@ -10,7 +10,7 @@ export interface CreatePostRequestBody {
 
 const prisma = new PrismaClient()
 
-export const GET = async (request: NextRequest) => {
+export const GET = async () => {
   try {
     const posts = await prisma.post.findMany({
       include: {

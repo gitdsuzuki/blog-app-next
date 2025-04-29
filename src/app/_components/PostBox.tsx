@@ -17,7 +17,7 @@ const PostBox: React.FC<{ post: Post }> = ({post}) => {
             </div>
             <div className="flex flex-auto justify-end">
               <ul className="flex text-xs">
-                {postCategories.map((elem: { category: {id: string, name: string}}) =>
+                {postCategories?.map((elem: { category: {id: string, name: string}}) =>
                 <li key={elem.category.id} className="text-sky-700 border border-sky-700 p-1.5 ml-2 rounded-md">{elem.category.name}</li>
                 )}
               </ul>
@@ -26,7 +26,7 @@ const PostBox: React.FC<{ post: Post }> = ({post}) => {
           <div className="text-2xl py-2 mb-2 opacity-80">
             {title}
           </div>
-          <div dangerouslySetInnerHTML={{ __html: content }} className="line-clamp-2 opacity-80"/>
+          <div dangerouslySetInnerHTML={{ __html: content || "" }} className="line-clamp-2 opacity-80"/>
         </div>
       </Link>
     </div>
