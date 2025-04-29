@@ -37,7 +37,7 @@ const CreateCategory: React.FC = () => {
 
   useEffect(() => {
     const fetcher = async () => {
-      const response: Response = await fetch("http://localhost:3000/api/admin/categories")
+      const response: Response = await fetch(process.env.NEXT_PUBLIC_APP_BASE_URL + "/api/admin/categories")
       const data = await response.json() as CategoriesResponse
       setCategories(data.categories)
     }
@@ -55,7 +55,7 @@ const CreateCategory: React.FC = () => {
     setCategoryIds(categories.map(category => ({id: category.id})))
 
     const response: Response = await fetch(
-      'http://localhost:3000/api/admin/posts',
+      process.env.NEXT_PUBLIC_APP_BASE_URL + '/api/admin/posts',
       requestOptions,
     )
 

@@ -16,12 +16,12 @@ const EditPost: React.FC<PostDetailsProps> = ({ params }) => {
   useEffect(() => {
     const fetcher = async () => {
       setLoading(true)
-      const resPost: Response = await fetch(`http://localhost:3000/api/admin/posts/${id}`)
+      const resPost: Response = await fetch(`${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/admin/posts/${id}`)
       const dataPost = await resPost.json() as PostResponse
       setPost(dataPost.post)
       console.log(dataPost.post)
 
-      const resCategories: Response = await fetch(`http://localhost:3000/api/admin/categories/`)
+      const resCategories: Response = await fetch(`${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/admin/categories/`)
       const allCategories = await resCategories.json() as CategoriesResponse
       setAllCategories(allCategories.categories) 
 
@@ -37,7 +37,7 @@ const EditPost: React.FC<PostDetailsProps> = ({ params }) => {
 
   const handleEdit = async () => {
     setLoading(true)
-    const response: Response = await fetch(`http://localhost:3000/api/admin/posts/${id}`, {
+    const response: Response = await fetch(`${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/admin/posts/${id}`, {
       method: 'PUT',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -60,7 +60,7 @@ const EditPost: React.FC<PostDetailsProps> = ({ params }) => {
 
   const handleDelete = async () => {
     setLoading(true)
-    const response: Response = await fetch(`http://localhost:3000/api/admin/posts/${id}`, {
+    const response: Response = await fetch(`${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/admin/posts/${id}`, {
       method: 'DELETE',
       })
     setLoading(false)

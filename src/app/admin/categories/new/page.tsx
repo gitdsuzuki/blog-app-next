@@ -28,7 +28,7 @@ const CreateCategory: React.FC = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const response: Response = await fetch(
-      'http://localhost:3000/api/admin/categories',
+      process.env.NEXT_PUBLIC_APP_BASE_URL + '/api/admin/categories',
       requestOptions,
     )
 

@@ -13,7 +13,7 @@ const EditCategory: React.FC<PostDetailsProps> = ({ params }) => {
   useEffect(() => {
     const fetcher = async () => {
       setLoading(true)
-      const res: Response = await fetch(`http://localhost:3000/api/admin/categories/${id}`)
+      const res: Response = await fetch(`${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/admin/categories/${id}`)
       const data = await res.json() as CategoryResponse
       setCategory(data.category)
       setLoading(false) 
@@ -23,7 +23,7 @@ const EditCategory: React.FC<PostDetailsProps> = ({ params }) => {
 
   const handleEdit = async () => {
     setLoading(true)
-    const response: Response = await fetch(`http://localhost:3000/api/admin/categories/${id}`, {
+    const response: Response = await fetch(`${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/admin/categories/${id}`, {
       method: 'PUT',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -44,7 +44,7 @@ const EditCategory: React.FC<PostDetailsProps> = ({ params }) => {
 
   const handleDelete = async () => {
     setLoading(true)
-    const response: Response = await fetch(`http://localhost:3000/api/admin/categories/${id}`, {
+    const response: Response = await fetch(`${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/admin/categories/${id}`, {
       method: 'DELETE',
       })
     setLoading(false)

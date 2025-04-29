@@ -10,7 +10,7 @@ const AdminPostList: React.FC = () => {
 
   useEffect(() => {
     const fetcher = async () => {
-      const response: Response = await fetch("http://localhost:3000/api/admin/posts")
+      const response: Response = await fetch(process.env.NEXT_PUBLIC_APP_BASE_URL + "/api/admin/posts")
       const data = await response.json() as PostsResponse
       setPosts(data.posts)
     }

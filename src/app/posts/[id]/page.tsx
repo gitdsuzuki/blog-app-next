@@ -13,7 +13,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ params }) => {
   useEffect(() => {
     const fetcher = async () => {
       setLoading(true)
-      const res: Response = await fetch(`http://localhost:3000/api/posts/${id}`)
+      const res: Response = await fetch(`${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/posts/${id}`)
       const data = await res.json() as PostResponse
       console.log(data.post)
       setPost(data.post)

@@ -9,7 +9,7 @@ const PostList: React.FC = () => {
 
   useEffect(() => {
     const fetcher = async () => {
-      const response: Response = await fetch("http://localhost:3000/api/posts")
+      const response: Response = await fetch(process.env.NEXT_PUBLIC_APP_BASE_URL + "/api/posts")
       const data = await response.json() as PostsResponse
       setPosts(data.posts)
     }
