@@ -8,7 +8,6 @@ const EditCategory: React.FC<PostDetailsProps> = ({ params }) => {
   const { id } = params
   const router = useRouter()
   const [category, setCategory] = useState<Category | null>(null)
-  const [postIds, setPostIds] = useState<{id: string}[]>([])
   const [loading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
@@ -17,7 +16,6 @@ const EditCategory: React.FC<PostDetailsProps> = ({ params }) => {
       const res: Response = await fetch(`http://localhost:3000/api/admin/categories/${id}`)
       const data = await res.json() as CategoryResponse
       setCategory(data.category)
-      setPostIds(data.category.posts.map(elem => ({id: elem.postId})))
       setLoading(false) 
     }
     fetcher()
@@ -30,7 +28,7 @@ const EditCategory: React.FC<PostDetailsProps> = ({ params }) => {
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
         name: category?.name,
-        posts: postIds
+        posts: category?.posts.map(elem => ({id: elem.postId}))
       })
       })
     setLoading(false)
