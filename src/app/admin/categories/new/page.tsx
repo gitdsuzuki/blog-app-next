@@ -2,34 +2,25 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import CategoryForm from '@/app/admin/_components/CategoryForm'
+import { Category } from '@/app/_types'
 
 const CreateCategory: React.FC = () => {
   const router = useRouter()
-  const [category, setCategory] = useState<string>("")
-
-  const body: {
-    name: string,
-    posts: []
-  } = {
-    name: category,
-    posts: []
-  }
-
-  const requestOptions: {
-    method: string,
-    headers: {[index: string]: string},
-    body: string
-  } = {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(body)
-  }
+  const [category, setCategory] = useState<Category | null>({id: "", name: "", posts: []})
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const response: Response = await fetch(
       process.env.NEXT_PUBLIC_APP_BASE_URL + '/api/admin/categories',
-      requestOptions,
+      {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          name: category?.name,
+          posts: category?.posts
+        })
+      }
     )
 
     if (response.ok) {
@@ -50,14 +41,7 @@ const CreateCategory: React.FC = () => {
           <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
             カテゴリー名
           </label>
-          <input 
-            type="text"
-            name="name"
-            id="name"
-            className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-            placeholder="記事のタイトルを入力"
-            onChange={(e) => setCategory(e.target.value)}
-          />
+          <CategoryForm category={category} setCategory={setCategory} />
         </div>
         <div className="flex space-x-4">
           <button 

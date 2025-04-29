@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import type { Category, CategoryResponse, PostDetailsProps } from '@/app/_types/index'
+import CategoryForm from '@/app/admin/_components/CategoryForm'
 
 const EditCategory: React.FC<PostDetailsProps> = ({ params }) => {
   const { id } = params
@@ -69,15 +70,7 @@ const EditCategory: React.FC<PostDetailsProps> = ({ params }) => {
           <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
             カテゴリー名
           </label>
-          <input 
-            type="text"
-            name="title"
-            id="title"
-            value={category.name}
-            className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-            placeholder="記事のタイトルを入力"
-            onChange={(e) => setCategory({...category, name: e.target.value})}
-          />
+          <CategoryForm category={category} setCategory={setCategory} />
         </div>
         <div className="flex space-x-4">
           <button 
