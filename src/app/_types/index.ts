@@ -4,8 +4,7 @@ export type Post = {
   content: string
   thumbnailUrl: string
   createdAt: string
-  categories: { id: string }[]
-  postCategories: { category: Category }[];
+  postCategories: { category: { id: string, name: string}}[]
 }
 
 export type Category = {
