@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import type { Category } from '@/app/_types'
 
-const PostBoxAdmin: React.FC<{ category: Category }> = ({category}) => {
+const CreateBoxAdmin: React.FC<{ category: Category }> = ({category}) => {
   const { id, name } = category
 
   return (
@@ -19,4 +19,4 @@ const PostBoxAdmin: React.FC<{ category: Category }> = ({category}) => {
   )
 }
 
-export default PostBoxAdmin
+export default CreateBoxAdmin
