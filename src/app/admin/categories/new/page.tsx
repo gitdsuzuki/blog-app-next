@@ -34,11 +34,10 @@ const CreateCategory: React.FC = () => {
 
     if (response.ok) {
       window.alert("作成しました")
+      router.push('/admin/categories')
     } else {
       window.alert('通信エラーです。')
     }
-
-    router.push('/admin/categories')
   }
 
   return (

@@ -35,11 +35,10 @@ const EditCategory: React.FC<PostDetailsProps> = ({ params }) => {
 
     if (response.ok) {
       window.alert("更新しました")
+      router.push('/admin/categories')
     } else {
       window.alert('通信エラーです。')
     }
-
-    router.push('/admin/categories')
   }
 
   const handleDelete = async () => {
@@ -51,11 +50,10 @@ const EditCategory: React.FC<PostDetailsProps> = ({ params }) => {
 
     if (response.ok) {
       window.alert("削除しました")
+      router.push('/admin/categories')
     } else {
       window.alert('通信エラーです。')
     }
-
-    router.push('/admin/categories')
   }
 
   if (loading) return <p>読み込み中です...</p>

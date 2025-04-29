@@ -51,11 +51,10 @@ const EditPost: React.FC<PostDetailsProps> = ({ params }) => {
 
     if (response.ok) {
       window.alert("更新しました")
+      router.push('/admin/posts')
     } else {
       window.alert('通信エラーです。')
     }
-
-    router.push('/admin/posts')
   }
 
   const handleDelete = async () => {
@@ -67,11 +66,10 @@ const EditPost: React.FC<PostDetailsProps> = ({ params }) => {
 
     if (response.ok) {
       window.alert("削除しました")
+      router.push('/admin/posts')
     } else {
       window.alert('通信エラーです。')
     }
-
-    router.push('/admin/posts')
   }
 
   if (loading) return <p>読み込み中です...</p>
