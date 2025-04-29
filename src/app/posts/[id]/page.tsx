@@ -2,27 +2,21 @@
 
 import Dayjs from 'dayjs'
 import { useState, useEffect } from 'react'
-import type { MicroCmsPost, PostDetailsProps } from '@/app/_types/index'
+import type { Post, PostDetailsProps, PostResponse } from '@/app/_types/index'
 import Image from 'next/image'
 
 const PostDetails: React.FC<PostDetailsProps> = ({ params }) => {
   const { id } = params
-  const [post, setPost] = useState<MicroCmsPost | null>(null)
+  const [post, setPost] = useState<Post | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
     const fetcher = async () => {
       setLoading(true)
-      const res: Response = await fetch(`https://dsuzuki.microcms.io/api/v1/posts/${id}`, 
-        {
-          headers: {
-            'X-MICROCMS-API-KEY': process.env.NEXT_PUBLIC_MICROCMS_API_KEY as string,
-          },
-        }
-      )
-      const data = await res.json() as MicroCmsPost
-      console.log(data)
-      setPost(data)
+      const res: Response = await fetch(`http://localhost:3000/api/posts/${id}`)
+      const data = await res.json() as PostResponse
+      console.log(data.post)
+      setPost(data.post)
       setLoading(false)
       
     }
@@ -33,17 +27,17 @@ const PostDetails: React.FC<PostDetailsProps> = ({ params }) => {
   if (loading) return <p>読み込み中です...</p>
   if (!post) return <div className="p-10 text-center text-3xl">404: 記事が見つかりませんでした</div>
 
-  const { title, thumbnail, createdAt, categories, content } = post
+  const { title, thumbnailUrl, createdAt, postCategories, content } = post
 
   return (
     <div className="w-full pt-14 px-4">
       <div className="mx-auto max-w-3xl">
         <div className="pb-4">
-          <Image 
-            src={thumbnail.url}
-            height={thumbnail.height}
-            width={thumbnail.width}
-            alt="thumnail"
+          <Image
+            src={thumbnailUrl}
+            width={800}
+            height={400}
+            alt="thumbnail"
           />
         </div>
         <div className="flex pl-3 pr-6">
@@ -53,9 +47,9 @@ const PostDetails: React.FC<PostDetailsProps> = ({ params }) => {
           <div className="flex flex-auto justify-end">
             <ul className="flex text-sm">
               {
-                categories.map((elem: {id: string, name: string}) => 
-                <li key={elem.id} className="text-sky-700 border border-sky-700 p-1.5 ml-2 rounded-md">
-                  {elem.name}
+                postCategories.map((elem: { category: {id: string, name: string}}) => 
+                <li key={elem.category.id} className="text-sky-700 border border-sky-700 p-1.5 ml-2 rounded-md">
+                  {elem.category.name}
                 </li>
                 )
               }
