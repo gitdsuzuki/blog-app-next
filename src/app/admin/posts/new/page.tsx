@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { MultiValue} from 'react-select'
 import { useRouter } from 'next/navigation'
 import { Post, CategoriesResponse } from '@/app/_types'
-import PostForm from '@/app/admin/_components/PostForm'
+import PostForm from '@/app/admin/posts/_components/PostForm'
 
 const CreateCategory: React.FC = () => {
   const router = useRouter()

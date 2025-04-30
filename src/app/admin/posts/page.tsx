@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import PostBoxAdmin from '@/app/admin/_components/PostBoxAdmin'
+import PostBoxAdmin from '@/app/admin/posts/_components/PostBoxAdmin'
 import type { Post, PostsResponse } from '@/app/_types'
 import Link from 'next/link'
 

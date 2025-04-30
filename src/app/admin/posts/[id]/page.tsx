@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { MultiValue } from 'react-select'
 import type { Post, PostDetailsProps, PostResponse } from '@/app/_types/index'
-import PostForm from '@/app/admin/_components/PostForm'
+import PostForm from '@/app/admin/posts/_components/PostForm'
 
 const EditPost: React.FC<PostDetailsProps> = ({ params }) => {
   const { id } = params

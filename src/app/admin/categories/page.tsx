@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import CategoryBoxAdmin from '@/app/admin/_components/CategoryBoxAdmin'
+import CategoryBoxAdmin from '@/app/admin/categories/_components/CategoryBoxAdmin'
 import type { Category, CategoriesResponse } from '@/app/_types'
 import Link from 'next/link'
 

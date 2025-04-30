@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import CategoryForm from '@/app/admin/_components/CategoryForm'
+import CategoryForm from '@/app/admin/categories/_components/CategoryForm'
 import { Category } from '@/app/_types'
 
 const CreateCategory: React.FC = () => {

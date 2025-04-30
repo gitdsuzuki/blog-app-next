@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import type { Category, CategoryResponse, PostDetailsProps } from '@/app/_types/index'
-import CategoryForm from '@/app/admin/_components/CategoryForm'
+import CategoryForm from '@/app/admin/categories/_components/CategoryForm'
 
 const EditCategory: React.FC<PostDetailsProps> = ({ params }) => {
   const { id } = params
