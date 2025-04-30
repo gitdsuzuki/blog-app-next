@@ -65,29 +65,9 @@ const EditCategory: React.FC<PostDetailsProps> = ({ params }) => {
       <div className="text-2xl font-semibold mb-6 text-gray-800">
         カテゴリー編集
       </div>
-      <form onSubmit={handleEdit} className="space-y-6">
-        <div>
-          <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
-            カテゴリー名
-          </label>
-          <CategoryForm category={category} setCategory={setCategory} />
-        </div>
-        <div className="flex space-x-4">
-          <button 
-            type="submit"
-            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
-          >
-            更新
-          </button>
-          <button
-            onClick={handleDelete}
-            type="button"
-            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700"
-          >
-            削除
-          </button>
-        </div>
-      </form>
+      <div>
+        <CategoryForm category={category} setCategory={setCategory} handleEdit={handleEdit} handleDelete={handleDelete} />
+      </div>
     </div>
   )
 }

@@ -9,8 +9,7 @@ const CreateCategory: React.FC = () => {
   const router = useRouter()
   const [category, setCategory] = useState<Category | null>({id: "", name: "", posts: []})
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+  const handleCreate = async () => {
     const response: Response = await fetch(
       process.env.NEXT_PUBLIC_APP_BASE_URL + '/api/admin/categories',
       {
@@ -36,22 +35,9 @@ const CreateCategory: React.FC = () => {
       <div className="text-2xl font-semibold mb-6 text-gray-800">
         カテゴリー作成
       </div>
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div>
-          <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
-            カテゴリー名
-          </label>
-          <CategoryForm category={category} setCategory={setCategory} />
-        </div>
-        <div className="flex space-x-4">
-          <button 
-            type="submit"
-            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
-          >
-            作成
-          </button>
-        </div>
-      </form>
+      <div>
+        <CategoryForm category={category} setCategory={setCategory} handleCreate={handleCreate}/>
+      </div>
     </div>
   )
 }
