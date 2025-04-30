@@ -74,24 +74,7 @@ const EditPost: React.FC<PostDetailsProps> = ({ params }) => {
       <div className="text-2xl font-semibold mb-6 text-gray-800">
         記事編集
       </div>
-      <form onSubmit={handleEdit} className="space-y-6">
-        <PostForm post={post} setPost={setPost} handleSelectedCategory={handleSelectedCategory} />
-        <div className="flex space-x-4 pt-4">
-          <button 
-            type="submit"
-            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
-          >
-            更新
-          </button>
-          <button
-            onClick={handleDelete}
-            type="button"
-            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700"
-          >
-            削除
-          </button>
-        </div>
-      </form>
+        <PostForm post={post} setPost={setPost} handleSelectedCategory={handleSelectedCategory} handleEdit={handleEdit} handleDelete={handleDelete} />
     </div>
   )
 }

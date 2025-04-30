@@ -29,8 +29,8 @@ const CreateCategory: React.FC = () => {
         setCategoryIds(selected)
   }
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+  const handleCreate = async () => {
+
     setCategoryIds(categories.map(category => ({id: category.id})))
 
     const response: Response = await fetch(
@@ -62,15 +62,7 @@ const CreateCategory: React.FC = () => {
       <div className="text-2xl font-semibold mb-6 text-gray-800">
         記事作成
       </div>
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <PostForm post={post} setPost={setPost} handleSelectedCategory={handleSelectedCategory} />
-        <button 
-          type="submit"
-          className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
-        >
-          作成
-        </button>
-      </form>
+      <PostForm post={post} setPost={setPost} handleSelectedCategory={handleSelectedCategory} handleCreate={handleCreate} />
     </div>
   )
 }

@@ -9,9 +9,12 @@ interface PostFormProps {
   post: Post | null
   setPost: React.Dispatch<React.SetStateAction<Post | null>>
   handleSelectedCategory: (newValue: MultiValue<{ value: string; label: string }>) => void
+  handleCreate?: React.MouseEventHandler<HTMLButtonElement>
+  handleEdit?: React.MouseEventHandler<HTMLButtonElement>
+  handleDelete?: React.MouseEventHandler<HTMLButtonElement>
 }
 
-const PostForm: React.FC<PostFormProps> = ({post, setPost, handleSelectedCategory}) => {
+const PostForm: React.FC<PostFormProps> = ({post, setPost, handleSelectedCategory, handleCreate, handleEdit, handleDelete}) => {
   const [allCategories, setAllCategories] = useState<Category[]>([])
 
   useEffect(() => {
@@ -24,7 +27,7 @@ const PostForm: React.FC<PostFormProps> = ({post, setPost, handleSelectedCategor
     },[])
 
   return (
-    <>
+    <form className="space-y-6">
       <div>
         <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
           タイトル
@@ -83,7 +86,37 @@ const PostForm: React.FC<PostFormProps> = ({post, setPost, handleSelectedCategor
           />
         </div>
       </div>
-    </>
+      <div>
+        { handleCreate &&
+          <button
+          onClick={handleCreate}
+          type="button"
+          className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+          >
+            作成
+          </button>
+        }
+      </div>
+      <div className="flex space-x-4">
+        { handleEdit &&
+          <button 
+            onClick={handleEdit}
+            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+          >
+            更新
+          </button>
+        }
+        { handleDelete && 
+          <button
+            onClick={handleDelete}
+            type="button"
+            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700"
+            >
+              削除
+          </button>
+        }
+      </div>
+    </form>
   )
 }
 
