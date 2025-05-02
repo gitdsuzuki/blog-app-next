@@ -17,7 +17,7 @@ const AdminPostList: React.FC = () => {
       const res = await fetch('/api/admin/posts', {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': token, // 👈 Header に token を付与
+          'Authorization': token,
         },
       })
       const { posts } = await res.json()

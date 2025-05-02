@@ -8,7 +8,7 @@ import PostForm from '@/app/admin/posts/_components/PostForm'
 
 const CreatePost: React.FC = () => {
   const router = useRouter()
-  const [post, setPost] = useState<Post | null>({id: "", title: "", content: "", thumbnailUrl: "", createdAt: "", postCategories: []})
+  const [post, setPost] = useState<Post | null>({id: "", title: "", content: "", thumbnailImageKey: "", createdAt: "", postCategories: []})
   const [categories, setCategories] = useState<Array<{id: string, name: string}>>([])
   const [categoryIds, setCategoryIds] = useState<Array<{id: string}>>([])
   const [loading, setLoading] = useState<boolean>(false)
@@ -41,7 +41,7 @@ const CreatePost: React.FC = () => {
         body: JSON.stringify({
           title: post?.title,
           content: post?.content,
-          thumbnailUrl: post?.thumbnailUrl,
+          thumbnailImageKey: post?.thumbnailImageKey,
           categories: categoryIds
         })
       }

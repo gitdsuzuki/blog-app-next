@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react'
 import { Post, Category, CategoriesResponse } from '@/app/_types'
 import { supabase } from '@/utils/supabase'　
 import { v4 as uuidv4 } from 'uuid'
+import Image from 'next/image'
 
 interface PostFormProps {
   post: Post | null
@@ -18,10 +19,8 @@ interface PostFormProps {
 
 const PostForm: React.FC<PostFormProps> = ({post, setPost, handleSelectedCategory, handleCreate, handleEdit, handleDelete}) => {
   const [allCategories, setAllCategories] = useState<Category[]>([])
-  const [thumbnailImageKey, setThumbnailImageKey] = useState('')
-  const [thumbnailImageUrl, setThumbnailImageUrl] = useState<null | string>(
-    null,
-  )
+  const [thumbnailImageUrl, setThumbnailImageUrl] = useState<null | string>(null)
+
   useEffect(() => {
       const fetcher = async () => {
         const resCategories: Response = await fetch(`${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/admin/categories/`)
@@ -32,50 +31,45 @@ const PostForm: React.FC<PostFormProps> = ({post, setPost, handleSelectedCategor
     },[])
 
   useEffect(() => {
-    if (!thumbnailImageKey) return
-
-　　// アップロード時に取得した、thumbnailImageKeyを用いて画像のURLを取得
     const fetcher = async () => {
+      if (!post?.thumbnailImageKey) return
+
       const {
         data: { publicUrl },
       } = await supabase.storage
         .from('post-thumbnail')
-        .getPublicUrl(thumbnailImageKey)
+        .getPublicUrl(post?.thumbnailImageKey)
 
       setThumbnailImageUrl(publicUrl)
     }
 
     fetcher()
-  }, [thumbnailImageKey])
+  }, [post?.thumbnailImageKey])
 
   const handleImageChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
   ): Promise<void> => {
     if (!event.target.files || event.target.files.length == 0) {
-      // 画像が選択されていないのでreturn
       return
     }
 
-    const file = event.target.files[0] // 選択された画像を取得
+    const file = event.target.files[0]
 
-    const filePath = `private/${uuidv4()}` // ファイルパスを指定
+    const filePath = `private/${uuidv4()}`
 
-    // Supabaseに画像をアップロード
     const { data, error } = await supabase.storage
-      .from('post-thumbnail')　// ここでバケット名を指定
+      .from('post-thumbnail')
       .upload(filePath, file, {
         cacheControl: '3600',
         upsert: false,
       })
 
-    // アップロードに失敗したらエラーを表示して終了
     if (error) {
       alert(error.message)
       return
     }
 
-    // data.pathに、画像固有のkeyが入っているので、thumbnailImageKeyに格納する
-    setThumbnailImageKey(data.path)
+    setPost({...post, thumbnailImageKey: data.path})
   }
 
   return (
@@ -110,18 +104,19 @@ const PostForm: React.FC<PostFormProps> = ({post, setPost, handleSelectedCategor
         </textarea>
       </div>
       <div>
+      {thumbnailImageUrl && (
+   　   <div className="mt-2">
+   　　　 <Image
+    　　　src={thumbnailImageUrl}
+     　   alt="thumbnail"
+     　   width={400}
+     　   height={400}
+    　    />
+   　   </div>
+ 　　　)}
         <label htmlFor="thumbnail_url" className="block text-sm font-medium text-gray-700 mb-1">
           サムネイルURL
         </label>
-        {/* <input
-          type="text"
-          name="thumbnailUrl"
-          id="thumbnailUrl"
-          value={post?.thumbnailUrl || ""}
-          className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-          placeholder="https://placehold.jp/800x400.png"
-          onChange={(e) => setPost({...post, thumbnailUrl: e.target.value})}
-        /> */}
         <input type="file" id="thumbnailImageKey" onChange={handleImageChange}　accept="image/*" />
       </div>
       <div>

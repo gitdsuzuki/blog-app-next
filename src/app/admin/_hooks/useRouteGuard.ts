@@ -7,7 +7,7 @@ export const useRouteGuard = () => {
   const { session } = useSupabaseSession()
 
   useEffect(() => {
-    if (session === undefined) return // sessionがundefinedの場合は読み込み中なので何もしない
+    if (session === undefined) return
 
     const fetcher = async () => {
       if (session === null) {

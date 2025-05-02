@@ -37,7 +37,7 @@ const EditPost: React.FC<PostDetailsProps> = ({ params }) => {
       body: JSON.stringify({
         title: post?.title,
         content: post?.content,
-        thumbnailUrl: post?.thumbnailUrl,
+        thumbnailImageKey: post?.thumbnailImageKey,
         categories: selectedCategories,
       })
       })

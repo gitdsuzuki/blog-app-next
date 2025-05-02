@@ -4,11 +4,13 @@ import Dayjs from 'dayjs'
 import { useState, useEffect } from 'react'
 import type { Post, PostDetailsProps, PostResponse } from '@/app/_types/index'
 import Image from 'next/image'
+import { supabase } from '@/utils/supabase'
 
 const PostDetails: React.FC<PostDetailsProps> = ({ params }) => {
   const { id } = params
   const [post, setPost] = useState<Post | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
+  const [thumbnailImageUrl, setThumbnailImageUrl] = useState<null | string>(null)
 
   useEffect(() => {
     const fetcher = async () => {
@@ -21,23 +23,40 @@ const PostDetails: React.FC<PostDetailsProps> = ({ params }) => {
     fetcher()
   },[id])
 
+  useEffect(() => {
+    const fetcher = async () => {
+      if (!post?.thumbnailImageKey) return
+
+      const {
+        data: { publicUrl },
+      } = await supabase.storage
+        .from('post-thumbnail')
+        .getPublicUrl(post?.thumbnailImageKey)
+
+      setThumbnailImageUrl(publicUrl)
+    }
+
+    fetcher()
+  }, [post?.thumbnailImageKey])
 
   if (loading) return <p>読み込み中です...</p>
   if (!post) return <div className="p-10 text-center text-3xl">404: 記事が見つかりませんでした</div>
 
-  const { title, thumbnailUrl, createdAt, postCategories, content } = post
+  const { title, createdAt, postCategories, content } = post
 
   return (
     <div className="w-full pt-14 px-4">
       <div className="mx-auto max-w-3xl">
+      {thumbnailImageUrl && (
         <div className="pb-4">
           <Image
-            src={thumbnailUrl || "https://placehold.jp/800x400.png"}
-            width={800}
+            src={thumbnailImageUrl}
+            width={400}
             height={400}
             alt="thumbnail"
           />
         </div>
+      )}
         <div className="flex pl-3 pr-6">
           <div className="text-sm opacity-50 flex flex-auto justify-start">
             {Dayjs(createdAt).format("YYYY/M/DD")}

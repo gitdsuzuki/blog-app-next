@@ -7,7 +7,7 @@ interface UpdatePostRequestBody {
   title: string
   content: string
   categories: { id: number }[]
-  thumbnailUrl: string
+  thumbnailImageKey: string
 }
 
 export const GET = async (
@@ -47,7 +47,7 @@ export const PUT = async (
   { params }: { params: { id: string} },
 ) => {
   const { id } = params
-  const { title, content, categories, thumbnailUrl }: UpdatePostRequestBody = await request.json()
+  const { title, content, categories, thumbnailImageKey }: UpdatePostRequestBody = await request.json()
 
   try {
     const post = await prisma.post.update({
@@ -57,7 +57,7 @@ export const PUT = async (
       data: {
         title,
         content,
-        thumbnailUrl,
+        thumbnailImageKey,
       },
     })
 
