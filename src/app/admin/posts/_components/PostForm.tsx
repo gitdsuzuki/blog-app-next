@@ -65,7 +65,7 @@ const PostForm: React.FC<PostFormProps> = ({post, setPost, handleSelectedCategor
           type="text"
           name="thumbnailUrl"
           id="thumbnailUrl"
-          value={post?.thumbnailUrl || "https://placehold.jp/800x400.png"}
+          value={post?.thumbnailUrl || ""}
           className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
           placeholder="https://placehold.jp/800x400.png"
           onChange={(e) => setPost({...post, thumbnailUrl: e.target.value})}

@@ -2,20 +2,30 @@
 
 import { useState, useEffect } from 'react'
 import PostBoxAdmin from '@/app/admin/posts/_components/PostBoxAdmin'
-import type { Post, PostsResponse } from '@/app/_types'
+import type { Post } from '@/app/_types'
 import Link from 'next/link'
+import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession'
 
 const AdminPostList: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([])
+  const { token } = useSupabaseSession()
 
   useEffect(() => {
+    if (!token) return
+
     const fetcher = async () => {
-      const response: Response = await fetch(process.env.NEXT_PUBLIC_APP_BASE_URL + "/api/admin/posts")
-      const data = await response.json() as PostsResponse
-      setPosts(data.posts)
+      const res = await fetch('/api/admin/posts', {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token, // 👈 Header に token を付与
+        },
+      })
+      const { posts } = await res.json()
+      setPosts([...posts])
     }
+
     fetcher()
-  },[])
+  }, [token])
 
   return (
     <div className='w-full bg-white p-6 shadow rounded'>

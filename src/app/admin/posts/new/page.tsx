@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { Post, CategoriesResponse } from '@/app/_types'
 import PostForm from '@/app/admin/posts/_components/PostForm'
 
-const CreateCategory: React.FC = () => {
+const CreatePost: React.FC = () => {
   const router = useRouter()
   const [post, setPost] = useState<Post | null>({id: "", title: "", content: "", thumbnailUrl: "", createdAt: "", postCategories: []})
   const [categories, setCategories] = useState<Array<{id: string, name: string}>>([])
@@ -67,4 +67,4 @@ const CreateCategory: React.FC = () => {
   )
 }
 
-export default CreateCategory
+export default CreatePost
