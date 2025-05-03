@@ -3,26 +3,20 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { MultiValue } from 'react-select'
-import type { Post, PostDetailsProps, PostResponse } from '@/app/_types/index'
+import type { Post, PostDetailsProps } from '@/app/_types/index'
 import PostForm from '@/app/admin/posts/_components/PostForm'
+import { usePost } from '@/app/_hooks/usePost'
 
 const EditPost: React.FC<PostDetailsProps> = ({ params }) => {
   const { id } = params
+  const { post: fetchedPost, isLoading } = usePost(id)
   const router = useRouter()
   const [selectedCategories, setSelectedCategories] = useState<{id: string, name: string}[]>([])
   const [post, setPost] = useState<Post | null>(null)
-  const [loading, setLoading] = useState<boolean>(false)
-
+  
   useEffect(() => {
-    const fetcher = async () => {
-      setLoading(true)
-      const resPost: Response = await fetch(`${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/admin/posts/${id}`)
-      const dataPost = await resPost.json() as PostResponse
-      setPost(dataPost.post)
-      setLoading(false)
-    }
-    fetcher()
-  },[id])
+    setPost(fetchedPost ?? null)
+  },[fetchedPost])
 
   const handleSelectedCategory = (newValue: MultiValue<{ value: string; label: string }>) => {
         const selected: {id: string, name: string}[] = newValue.map((elem) => ({id: elem.value, name: elem.label}))
@@ -30,7 +24,6 @@ const EditPost: React.FC<PostDetailsProps> = ({ params }) => {
   }
 
   const handleEdit = async () => {
-    setLoading(true)
     const response: Response = await fetch(`${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/admin/posts/${id}`, {
       method: 'PUT',
       headers: {'Content-Type': 'application/json'},
@@ -41,7 +34,6 @@ const EditPost: React.FC<PostDetailsProps> = ({ params }) => {
         categories: selectedCategories,
       })
       })
-    setLoading(false)
 
     if (response.ok) {
       window.alert("更新しました")
@@ -52,11 +44,9 @@ const EditPost: React.FC<PostDetailsProps> = ({ params }) => {
   }
 
   const handleDelete = async () => {
-    setLoading(true)
     const response: Response = await fetch(`${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/admin/posts/${id}`, {
       method: 'DELETE',
       })
-    setLoading(false)
 
     if (response.ok) {
       window.alert("削除しました")
@@ -66,7 +56,7 @@ const EditPost: React.FC<PostDetailsProps> = ({ params }) => {
     }
   }
 
-  if (loading) return <p>読み込み中です...</p>
+  if (isLoading) return <p>読み込み中です...</p>
   if (!post) return <div className="p-10 text-center text-3xl">404: 記事が見つかりませんでした</div>
 
   return (

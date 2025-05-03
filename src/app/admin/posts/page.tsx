@@ -1,31 +1,16 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import PostBoxAdmin from '@/app/admin/posts/_components/PostBoxAdmin'
 import type { Post } from '@/app/_types'
 import Link from 'next/link'
 import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession'
+import { usePostsAdmin } from '@/app/_hooks/usePosts'
 
 const AdminPostList: React.FC = () => {
-  const [posts, setPosts] = useState<Post[]>([])
   const { token } = useSupabaseSession()
+  const { posts, isLoading } = usePostsAdmin(token)
 
-  useEffect(() => {
-    if (!token) return
-
-    const fetcher = async () => {
-      const res = await fetch('/api/admin/posts', {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': token,
-        },
-      })
-      const { posts } = await res.json()
-      setPosts([...posts])
-    }
-
-    fetcher()
-  }, [token])
+  if (isLoading) return <p>読み込み中です...</p>
 
   return (
     <div className='w-full bg-white p-6 shadow rounded'>
@@ -40,7 +25,7 @@ const AdminPostList: React.FC = () => {
         </Link>
       </div>
       <div className='px-2'>
-        {posts.map((post: Post) => <PostBoxAdmin key={post.id} post={post} />)}
+        {posts?.map((post: Post) => <PostBoxAdmin key={post.id} post={post} />)}
       </div>
     </div>
   )

@@ -1,24 +1,17 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import PostBox from '@/app/_components/PostBox'
-import type { Post, PostsResponse } from '@/app/_types'
+import type { Post } from '@/app/_types'
+import { usePosts } from '@/app/_hooks/usePosts'
 
 const PostList: React.FC = () => {
-  const [posts, setPosts] = useState<Post[]>([])
+  const { posts, isLoading } = usePosts()
 
-  useEffect(() => {
-    const fetcher = async () => {
-      const response: Response = await fetch(process.env.NEXT_PUBLIC_APP_BASE_URL + "/api/posts")
-      const data = await response.json() as PostsResponse
-      setPosts(data.posts)
-    }
-    fetcher()
-  },[])
+  if (isLoading) return <p>読み込み中です...</p>
 
   return (
     <>
-      {posts.map((post: Post) => <PostBox key={post.id} post={post} />)}
+      {posts?.map((post: Post) => <PostBox key={post.id} post={post} />)}
     </>
   )
 }

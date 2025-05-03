@@ -2,11 +2,12 @@
 
 import React from 'react'
 import Select, { MultiValue } from 'react-select'
-import { useState, useEffect } from 'react'
-import { Post, Category, CategoriesResponse } from '@/app/_types'
+import { Post } from '@/app/_types'
 import { supabase } from '@/utils/supabase'　
 import { v4 as uuidv4 } from 'uuid'
 import Image from 'next/image'
+import { useCategories } from '@/app/_hooks/useCategories'
+import { useThumbnailUrl } from '@/app/_hooks/useThumbnailUrl'
 
 interface PostFormProps {
   post: Post | null
@@ -18,33 +19,8 @@ interface PostFormProps {
 }
 
 const PostForm: React.FC<PostFormProps> = ({post, setPost, handleSelectedCategory, handleCreate, handleEdit, handleDelete}) => {
-  const [allCategories, setAllCategories] = useState<Category[]>([])
-  const [thumbnailImageUrl, setThumbnailImageUrl] = useState<null | string>(null)
-
-  useEffect(() => {
-      const fetcher = async () => {
-        const resCategories: Response = await fetch(`${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/admin/categories/`)
-        const allCategories = await resCategories.json() as CategoriesResponse
-        setAllCategories(allCategories.categories) 
-      }
-      fetcher()
-    },[])
-
-  useEffect(() => {
-    const fetcher = async () => {
-      if (!post?.thumbnailImageKey) return
-
-      const {
-        data: { publicUrl },
-      } = await supabase.storage
-        .from('post-thumbnail')
-        .getPublicUrl(post?.thumbnailImageKey)
-
-      setThumbnailImageUrl(publicUrl)
-    }
-
-    fetcher()
-  }, [post?.thumbnailImageKey])
+  const { categories: allCategories } = useCategories()
+  const { thumbnailImageUrl } = useThumbnailUrl(post?.thumbnailImageKey)
 
   const handleImageChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -125,7 +101,7 @@ const PostForm: React.FC<PostFormProps> = ({post, setPost, handleSelectedCategor
         </label>
         <div className="block w-full rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
           <Select
-            options={allCategories.map(category => ({value: category.id, label: category.name}))}
+            options={allCategories?.map(category => ({value: category.id, label: category.name}))}
             defaultValue={post?.postCategories?.map(elem => ({value: elem.category?.id, label: elem.category?.name})) || []}
             id="categories"
             name="categories"
@@ -149,6 +125,7 @@ const PostForm: React.FC<PostFormProps> = ({post, setPost, handleSelectedCategor
         { handleEdit &&
           <button 
             onClick={handleEdit}
+            type="button"
             className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
           >
             更新
