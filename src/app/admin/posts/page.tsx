@@ -4,7 +4,7 @@ import PostBoxAdmin from '@/app/admin/posts/_components/PostBoxAdmin'
 import type { Post } from '@/app/_types'
 import Link from 'next/link'
 import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession'
-import { usePostsAdmin } from '@/app/_hooks/usePosts'
+import { usePostsAdmin } from '@/app/admin/posts/_hooks/usePostsAdmin'
 
 const AdminPostList: React.FC = () => {
   const { token } = useSupabaseSession()
