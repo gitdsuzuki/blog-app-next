@@ -1,4 +1,4 @@
-import { PostsResponse } from "@/app/_types/index";
+import { CategoriesResponse } from "@/app/_types/index";
 import useSWR from 'swr'
 
 const fetcherAdmin = async ([key, token]: [string, string]) => {
@@ -7,17 +7,17 @@ const fetcherAdmin = async ([key, token]: [string, string]) => {
       'Content-Type': 'application/json',
       'Authorization': token,
     },
-  }).then((res) => res.json() as Promise<PostsResponse>);
+  }).then((res) => res.json() as Promise<CategoriesResponse>);
 }
 
-export const usePostsAdmin = (token: string | null) => {
+export const useCategoriesAdmin = (token: string | null) => {
   const { data, error, isLoading } = useSWR(
-    [`${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/admin/posts/`, token],
+    [`${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/admin/categories/`, token],
     fetcherAdmin
   )
 
   return {
-    posts: data?.posts,
+    categories: data?.categories,
     isLoading,
     isError: error,
   }

@@ -6,12 +6,14 @@ import { useRouter } from 'next/navigation'
 import { Post } from '@/app/_types'
 import PostForm from '@/app/admin/posts/_components/PostForm'
 import { useCategories } from '@/app/_hooks/useCategories'
+import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession'
 
 const CreatePost: React.FC = () => {
   const router = useRouter()
   const [post, setPost] = useState<Post | null>({id: "", title: "", content: "", thumbnailImageKey: "", createdAt: "", postCategories: []})
   const [categoryIds, setCategoryIds] = useState<Array<{id: string}>>([])
   const { categories, isLoading } = useCategories()
+  const { token } = useSupabaseSession()
 
   const handleSelectedCategory = (newValue: MultiValue<{ value: string; label: string }>) => {
         const selected: {id: string}[] = newValue.map((elem) => ({id: elem.value}))
@@ -26,7 +28,10 @@ const CreatePost: React.FC = () => {
       process.env.NEXT_PUBLIC_APP_BASE_URL + '/api/admin/posts',
       {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token,
+        },
         body: JSON.stringify({
           title: post?.title,
           content: post?.content,

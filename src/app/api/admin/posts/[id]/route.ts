@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { PrismaClient } from "@prisma/client"
+import { supabase } from "@/utils/supabase"
 
 const prisma = new PrismaClient()
 
@@ -15,6 +16,12 @@ export const GET = async (
   { params }: {params: {id: string} },
 ) => {
   const { id } = params
+
+  const token = request.headers.get('Authorization') ?? ''
+  const { error } = await supabase.auth.getUser(token)
+
+  if (error)
+    return NextResponse.json({ status: error.message }, { status: 400 })
 
   try {
     const post = await prisma.post.findUnique({
@@ -46,6 +53,12 @@ export const PUT = async (
   request: NextRequest,
   { params }: { params: { id: string} },
 ) => {
+  const token = request.headers.get('Authorization') ?? ''
+  const { error } = await supabase.auth.getUser(token)
+
+  if (error)
+    return NextResponse.json({ status: error.message }, { status: 400 })
+
   const { id } = params
   const { title, content, categories, thumbnailImageKey }: UpdatePostRequestBody = await request.json()
 
@@ -87,6 +100,12 @@ export const DELETE = async (
   request: NextRequest,
   { params }: { params: { id: string} },
 ) => {
+  const token = request.headers.get('Authorization') ?? ''
+  const { error } = await supabase.auth.getUser(token)
+
+  if (error)
+    return NextResponse.json({ status: error.message }, { status: 400 })
+  
   const { id } = params
 
   try {

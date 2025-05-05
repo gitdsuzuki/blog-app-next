@@ -3,10 +3,12 @@
 import CategoryBoxAdmin from '@/app/admin/categories/_components/CategoryBoxAdmin'
 import type { Category } from '@/app/_types'
 import Link from 'next/link'
-import { useCategories } from '@/app/_hooks/useCategories'
+import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession'
+import { useCategoriesAdmin } from './_hook/useCategoriesAdmin'
 
 const AdminCategoryList: React.FC = () => {
-  const { categories, isLoading } = useCategories()
+  const { token } = useSupabaseSession()
+  const { categories, isLoading } = useCategoriesAdmin(token)
 
   if (isLoading) return <p>読み込み中です...</p>
 

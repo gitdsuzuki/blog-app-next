@@ -7,7 +7,7 @@ const fetcher = async (key: string) => {
 
 export const useCategories = () => {
   const { data, error, isLoading } = useSWR(
-    `${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/admin/categories/`,
+    `${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/categories/`,
     fetcher
   )
 

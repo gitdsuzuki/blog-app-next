@@ -6,6 +6,7 @@ import { MultiValue } from 'react-select'
 import type { Post, PostDetailsProps } from '@/app/_types/index'
 import PostForm from '@/app/admin/posts/_components/PostForm'
 import { usePost } from '@/app/_hooks/usePost'
+import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession'
 
 const EditPost: React.FC<PostDetailsProps> = ({ params }) => {
   const { id } = params
@@ -13,6 +14,7 @@ const EditPost: React.FC<PostDetailsProps> = ({ params }) => {
   const router = useRouter()
   const [selectedCategories, setSelectedCategories] = useState<{id: string, name: string}[]>([])
   const [post, setPost] = useState<Post | null>(null)
+  const { token } = useSupabaseSession()
   
   useEffect(() => {
     setPost(fetchedPost ?? null)
@@ -24,9 +26,14 @@ const EditPost: React.FC<PostDetailsProps> = ({ params }) => {
   }
 
   const handleEdit = async () => {
+    if (!token) return 
+
     const response: Response = await fetch(`${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/admin/posts/${id}`, {
       method: 'PUT',
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token,
+      },
       body: JSON.stringify({
         title: post?.title,
         content: post?.content,
@@ -44,8 +51,14 @@ const EditPost: React.FC<PostDetailsProps> = ({ params }) => {
   }
 
   const handleDelete = async () => {
+    if (!token) return 
+    
     const response: Response = await fetch(`${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/admin/posts/${id}`, {
       method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token,
+      },
       })
 
     if (response.ok) {
