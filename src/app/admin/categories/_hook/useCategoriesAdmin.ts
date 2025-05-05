@@ -1,19 +1,9 @@
-import { CategoriesResponse } from "@/app/_types/index";
-import useSWR from 'swr'
-
-const fetcherAdmin = async ([key, token]: [string, string]) => {
-  return fetch(key, {
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': token,
-    },
-  }).then((res) => res.json() as Promise<CategoriesResponse>);
-}
+import { useFetchAdmin } from '@/app/admin/_hooks/useFetchAdmin'
 
 export const useCategoriesAdmin = (token: string | null) => {
-  const { data, error, isLoading } = useSWR(
-    [`${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/admin/categories/`, token],
-    fetcherAdmin
+  const { data, error, isLoading } = useFetchAdmin(
+    '/api/admin/categories/',
+    token ?? ''
   )
 
   return {

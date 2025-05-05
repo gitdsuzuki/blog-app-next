@@ -1,19 +1,11 @@
-import { PostsResponse } from "@/app/_types/index";
-import useSWR from 'swr'
-
-const fetcher = async (key: string) => {
-  return fetch(key).then((res) => res.json() as Promise<PostsResponse>);
-}
+import { useFetch } from '@/app/_hooks/useFetch'
 
 export const usePosts = () => {
-  const { data, error, isLoading } = useSWR(
-    `${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/posts/`,
-    fetcher
-  )
+  const { data, error, isLoading } = useFetch('/api/posts/')
 
   return {
     posts: data?.posts,
     isLoading,
     isError: error,
-  }
+  } 
 }
