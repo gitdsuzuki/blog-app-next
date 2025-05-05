@@ -1,43 +1,34 @@
 'use client'
 
 import Dayjs from 'dayjs'
-import { useState, useEffect } from 'react'
-import type { Post, PostDetailsProps, PostResponse } from '@/app/_types/index'
+import type { PostDetailsProps } from '@/app/_types'
 import Image from 'next/image'
+import { usePost } from '@/app/_hooks/usePost'
+import { useThumbnailUrl } from '@/app/_hooks/useThumbnailUrl'
 
 const PostDetails: React.FC<PostDetailsProps> = ({ params }) => {
   const { id } = params
-  const [post, setPost] = useState<Post | null>(null)
-  const [loading, setLoading] = useState<boolean>(false)
+  const { post, isLoading } = usePost(id)
+  const { thumbnailImageUrl } = useThumbnailUrl(post?.thumbnailImageKey)
 
-  useEffect(() => {
-    const fetcher = async () => {
-      setLoading(true)
-      const res: Response = await fetch(`${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/posts/${id}`)
-      const data = await res.json() as PostResponse
-      setPost(data.post)
-      setLoading(false)
-    }
-    fetcher()
-  },[id])
-
-
-  if (loading) return <p>読み込み中です...</p>
+  if (isLoading) return <p>読み込み中です...</p>
   if (!post) return <div className="p-10 text-center text-3xl">404: 記事が見つかりませんでした</div>
 
-  const { title, thumbnailUrl, createdAt, postCategories, content } = post
+  const { title, createdAt, postCategories, content } = post
 
   return (
     <div className="w-full pt-14 px-4">
       <div className="mx-auto max-w-3xl">
+      {thumbnailImageUrl && (
         <div className="pb-4">
           <Image
-            src={thumbnailUrl || "https://placehold.jp/800x400.png"}
-            width={800}
+            src={thumbnailImageUrl}
+            width={400}
             height={400}
             alt="thumbnail"
           />
         </div>
+      )}
         <div className="flex pl-3 pr-6">
           <div className="text-sm opacity-50 flex flex-auto justify-start">
             {Dayjs(createdAt).format("YYYY/M/DD")}

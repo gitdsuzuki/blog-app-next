@@ -1,16 +1,23 @@
 import { NextRequest, NextResponse } from "next/server"
 import { PrismaClient } from "@prisma/client"
+import { supabase } from "@/utils/supabase"
 
 export interface CreatePostRequestBody {
   title: string
   content: string
   categories: { id: number}[]
-  thumbnailUrl: string
+  thumbnailImageKey: string
 }
 
 const prisma = new PrismaClient()
 
-export const GET = async () => {
+export const GET = async (request: NextRequest) => {
+  const token = request.headers.get('Authorization') ?? ''
+  const { error } = await supabase.auth.getUser(token)
+
+  if (error)
+    return NextResponse.json({ status: error.message }, { status: 400 })
+
   try {
     const posts = await prisma.post.findMany({
       include: {
@@ -39,15 +46,21 @@ export const GET = async () => {
 }
 
 export const POST = async (request: NextRequest) => {
+  const token = request.headers.get('Authorization') ?? ''
+  const { error } = await supabase.auth.getUser(token)
+
+  if (error)
+    return NextResponse.json({ status: error.message }, { status: 400 })
+
   try {
     const body = await request.json()
-    const { title, content, categories, thumbnailUrl }: CreatePostRequestBody = body
+    const { title, content, categories, thumbnailImageKey }: CreatePostRequestBody = body
     
     const data = await prisma.post.create({
       data: {
         title,
         content,
-        thumbnailUrl,
+        thumbnailImageKey,
       },
     })
 

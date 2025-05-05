@@ -4,17 +4,24 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import CategoryForm from '@/app/admin/categories/_components/CategoryForm'
 import { Category } from '@/app/_types'
+import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession'
 
 const CreateCategory: React.FC = () => {
   const router = useRouter()
   const [category, setCategory] = useState<Category | null>({id: "", name: "", posts: []})
+  const { token } = useSupabaseSession()
 
   const handleCreate = async () => {
+    if (!token) return 
+    
     const response: Response = await fetch(
       process.env.NEXT_PUBLIC_APP_BASE_URL + '/api/admin/categories',
       {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token,
+        },
         body: JSON.stringify({
           name: category?.name,
           posts: category?.posts

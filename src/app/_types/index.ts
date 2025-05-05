@@ -2,7 +2,7 @@ export type Post = {
   id?: string
   title?: string
   content?: string
-  thumbnailUrl?: string
+  thumbnailImageKey?: string
   createdAt?: string
   postCategories?: { category: { id: string, name: string}}[]
 }

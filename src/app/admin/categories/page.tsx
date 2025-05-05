@@ -1,21 +1,16 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import CategoryBoxAdmin from '@/app/admin/categories/_components/CategoryBoxAdmin'
-import type { Category, CategoriesResponse } from '@/app/_types'
+import type { Category } from '@/app/_types'
 import Link from 'next/link'
+import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession'
+import { useCategoriesAdmin } from './_hook/useCategoriesAdmin'
 
 const AdminCategoryList: React.FC = () => {
-  const [categories, setCategories] = useState<Category[]>([])
+  const { token } = useSupabaseSession()
+  const { categories, isLoading } = useCategoriesAdmin(token)
 
-  useEffect(() => {
-    const fetcher = async () => {
-      const response: Response = await fetch(process.env.NEXT_PUBLIC_APP_BASE_URL+ "/api/admin/categories")
-      const data = await response.json() as CategoriesResponse
-      setCategories(data.categories)
-    }
-    fetcher()
-  },[])
+  if (isLoading) return <p>読み込み中です...</p>
 
   return (
     <div className='w-full bg-white p-6 shadow rounded'>
@@ -30,7 +25,7 @@ const AdminCategoryList: React.FC = () => {
         </Link>
       </div>
       <div className='px-2'>
-        {categories.map((category: Category) => <CategoryBoxAdmin key={category.id} category={category} />)}
+        {categories?.map((category: Category) => <CategoryBoxAdmin key={category.id} category={category} />)}
       </div>
     </div>
   )
